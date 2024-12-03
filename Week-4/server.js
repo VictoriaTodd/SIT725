@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 var port = process.env.port || 3000;
 
-// inset data to DB
+// insert data to DB
 async function insertData(first_name, last_name, email) {
     const client = new MongoClient(uri);
 
@@ -36,14 +36,30 @@ async function insertData(first_name, last_name, email) {
     }
 }
 
+// retrieve data from DB
+async function retrieveData() {
+    const client = new MongoClient(uri);
+
+    try {
+        const database = client.db('myDB');
+        const people = database.collection('people');
+        // retrieve all records from DB and return as array
+        const results = await people.find().toArray();
+        return results;
+    } catch (err) {
+        console.error("Error retrieving data:", err);
+        throw err;
+    } finally {
+        await client.close();
+    }
+}
+
 // Middleware to parse incoming JSON requests
 app.use(bodyParser.json());
 
 // Receive form data from client side
 app.post("/api/submit-form", (req, res) => {
     const { first_name, last_name, email } = req.body;
-
-    console.log("Received form data:", { first_name, last_name, email });
 
     // Save data to MongoDB
     insertData(first_name, last_name, email)
@@ -52,23 +68,16 @@ app.post("/api/submit-form", (req, res) => {
     res.status(200).json({ message: "Form submitted successfully", data: req.body });
 });
 
-const cardList = [
-    {
-        firstName: "Bob",
-        lastName: "Robertson",
-        email: "bob@roberston.com.au",
-    },
-    {
-        firstName: "Robert",
-        lastName: "Bobson",
-        email: "rob@robsrus.com",
+// Send card data to client side
+app.get('/api/get-cards', async (req, res) => {
+    try {
+        const cardList = await retrieveData();
+        res.json({ statusCode: 200, data: cardList, message: "Success" });
+    } catch (error) {
+        console.error("Error in /api/get-cards:", error);
+        res.status(500).json({ statusCode: 500, message: "Internal Server Error" });
     }
-]
-
-app.get('/api/get-cards', (req, res) => {
-    res.json({ statusCode: 200, data: cardList, message: "Success" })
-})
-
+});
 
 app.listen(port, () => {
     console.log("App listening to: " + port)

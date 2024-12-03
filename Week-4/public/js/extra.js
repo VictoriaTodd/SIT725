@@ -2,13 +2,6 @@ const clickMe = () => {
     alert("Your alert text goes here!")
 }
 
-const data = [
-    { title: "Card 1", content: "This is the first card.", image: "https://via.placeholder.com/150" },
-    { title: "Card 2", content: "This is the second card.", image: "https://via.placeholder.com/150" },
-    { title: "Card 3", content: "This is the third card.", image: "https://via.placeholder.com/150" },
-];
-
-
 $(document).ready(function () {
     $('.modal').modal();
     $('#clickMeButton').click(() => {
@@ -19,11 +12,6 @@ $(document).ready(function () {
         const firstName = $('#first_name').val();
         const lastName = $('#last_name').val();
         const email = $('#email').val();
-
-        // Log or use the values
-        console.log('First Name:', firstName);
-        console.log('Last Name:', lastName);
-        console.log('Email:', email);
 
         // Package the values to send to the server
         const formData = {
@@ -50,7 +38,7 @@ $(document).ready(function () {
     });
     $.getJSON("/api/get-cards", function (result) {
         console.log("retrieved")
-        console.log(data)
+        console.log(result)
         const $cardContainer = $("#card-container");
 
         result.data.forEach((item) => {
