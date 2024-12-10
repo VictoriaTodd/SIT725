@@ -17,10 +17,9 @@ function addCards(data) {
 
 const formSumitted = () => {
     let formData = {};
-    formData.title = $('#title').val();
-    formData.path = $('#path').val();
-    formData.subTitle = $('#subTitle').val();
-    formData.description = $('#description').val();
+    formData.firstName = $('#first_name').val();
+    formData.lastName = $('#last_name').val();
+    formData.email = $('#email').val();
 
     console.log(formData);
     postPerson(formData);
