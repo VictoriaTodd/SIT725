@@ -10,9 +10,5 @@ router.get('/', (req,res)=>{
     controller.getAllPeople(req,res);
 });
 
-router.delete('/', (req,res)=>{
-    controller.getAllPeople(req,res);
-});
-
 
 module.exports = router;

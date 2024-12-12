@@ -17,13 +17,4 @@ const getAllPeople = (req,res) => {
     });
 }
 
-const deletePerson = (req,res) => {
-    let person = req.body;
-    collection.deleteOne(person, (err,result) => {
-        if (!err) {
-            res.json({statusCode:201,data:result,message:'success'});
-        }
-    });
-}
-
 module.exports = {postPerson,getAllPeople}
