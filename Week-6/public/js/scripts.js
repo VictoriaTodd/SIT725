@@ -15,14 +15,14 @@ function addCards(data) {
     });
 }
 
-const formSumitted = () => {
+const formSubmitted = (postPersonFunction) => {
     let formData = {};
     formData.firstName = $('#first_name').val();
     formData.lastName = $('#last_name').val();
     formData.email = $('#email').val();
 
     console.log(formData);
-    postPerson(formData);
+    postPersonFunction(formData);
 }
 
 function postPerson(person) {
@@ -39,25 +39,21 @@ function postPerson(person) {
     });
 }
 
-function getAllPeople() {
+function getAllPeople(addCardsFunction) {
     $.get('/api/person',(result)=>{
         if (result.statusCode === 200) {
-            addCards(result.data);
+            addCardsFunction(result.data);
         }
     });
 }
 
-let socket = io();
-socket.on('number',(msg)=>{
-    console.log('Random Number: ' + msg);
-});
 
 $(document).ready(function(){
     $('.materialboxed').materialbox();
     $('#submit-button').click(()=>{
-        formSumitted();
+        formSubmitted(postPerson);
     });
     $('.modal').modal();
-    getAllPeople();
+    getAllPeople(addCards);
     console.log('ready');
 });

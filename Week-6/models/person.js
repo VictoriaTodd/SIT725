@@ -1,12 +1,12 @@
 let client = require('../dbConnection');
 
-let collection = client.db().collection('People');
+let defaultCollection = client.db().collection('People');
 
-function postPerson(person, callback) {
+function postPerson(person, callback, collection = defaultCollection) {
     collection.insertOne(person,callback);
 }
 
-function getAllPeople(callback) {
+function getAllPeople(callback, collection = defaultCollection) {
     collection.find({}).toArray(callback);
 }
 

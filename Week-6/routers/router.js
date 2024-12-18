@@ -1,14 +1,17 @@
 let express = require('express');
-let router = express.Router();
-let controller = require('../controllers/controller');
 
-router.post('/', function(req,res){
-    controller.postPerson(req,res);
-});
+function createRouter(controller) {
+    let router = express.Router();
 
-router.get('/', (req,res)=>{
-    controller.getAllPeople(req,res);
-});
+    router.post('/', function (req, res) {
+        controller.postPerson(req, res);
+    });
 
+    router.get('/', (req, res) => {
+        controller.getAllPeople(req, res);
+    });
 
-module.exports = router;
+    return router;
+}
+
+module.exports = createRouter;
