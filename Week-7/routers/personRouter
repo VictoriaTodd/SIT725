@@ -1,0 +1,7 @@
+const express = require('express');
+const createRouter = require('./router');
+const controller = require('../controllers/controller');
+
+const personRouter = createRouter(controller);
+
+module.exports = personRouter;
